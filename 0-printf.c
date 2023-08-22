@@ -7,7 +7,9 @@
 int _printf(const char *format, ...)
 {
 	va_list args;
+	char c;
 	int chars_printed = 0;
+	char *str = va_arg(args, char*);
 
 	va_start(args, format);
 
@@ -19,19 +21,24 @@ int _printf(const char *format, ...)
 			switch (*format)
 			{
 				case 'c':
-					chars_printed += printf("%c", va_arg(args, int));
+					chars_printed += write(1, &c, 1);
 					break;
 				case 's':
-					chars_printed += printf("%s", va_arg(args, char*));
+					if (!str)
+					{
+						str = "(null)";
+					}
+					chars_printed += write(1, str, strnlen(str, 10));
+					free(str);
 					break;
 				case '%':
-					chars_printed += printf("%%");
+					chars_printed += write(1, "%", 1);
 					break;
 			}
 		}
 		else
 		{
-			chars_printed += printf("%c", *format);
+			chars_printed += write(1, format, 1);
 		}
 		format++;
 	}
