@@ -62,7 +62,7 @@ int print_string(char *s)
 {
 	int chars = 0;
 
-	while (*s)
+	while (*s != '\0')
 	{
 		chars += write(1, s++, 1);
 	}
